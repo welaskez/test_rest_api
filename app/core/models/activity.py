@@ -26,4 +26,4 @@ class Activity(Base, UuidPkMixin, CreatedAtMixin, UpdatedAtMixin):
         remote_side=[parent_id],
     )
 
-    parent: Mapped["Activity"] = relationship(back_populates="children")
+    parent: Mapped["Activity"] = relationship(back_populates="childrens")
