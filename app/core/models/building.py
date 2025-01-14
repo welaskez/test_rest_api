@@ -16,7 +16,7 @@ class Building(Base, UuidPkMixin, CreatedAtMixin, UpdatedAtMixin):
     city: Mapped[str]
     district: Mapped[str | None]
     micro_district_or_street: Mapped[str]
-    number: Mapped[int]
+    number: Mapped[str]
     postal_code: Mapped[int]
     latitude: Mapped[float] = mapped_column(Float)
     longitude: Mapped[float] = mapped_column(Float)
