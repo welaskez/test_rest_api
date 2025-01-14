@@ -1,8 +1,13 @@
+from typing import TYPE_CHECKING
+
 from sqlalchemy import Float
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base
 from .mixins import CreatedAtMixin, UpdatedAtMixin, UuidPkMixin
+
+if TYPE_CHECKING:
+    from .organization import Organization
 
 
 class Building(Base, UuidPkMixin, CreatedAtMixin, UpdatedAtMixin):
@@ -15,3 +20,7 @@ class Building(Base, UuidPkMixin, CreatedAtMixin, UpdatedAtMixin):
     postal_code: Mapped[int]
     latitude: Mapped[float] = mapped_column(Float)
     longitude: Mapped[float] = mapped_column(Float)
+
+    organizations: Mapped[list["Organization"]] = relationship(
+        back_populates="building"
+    )
