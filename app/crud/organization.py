@@ -100,6 +100,7 @@ class OrganizationCRUD(BaseCRUD[Organization]):
                 selectinload(Organization.activity).selectinload(
                     Activity.childrens, recursion_depth=3
                 ),
+                selectinload(Organization.phone_numbers),
             )
             .where(
                 Building.latitude.between(*latitude_range),
@@ -133,6 +134,7 @@ class OrganizationCRUD(BaseCRUD[Organization]):
                 selectinload(Organization.activity).selectinload(
                     Activity.childrens, recursion_depth=3
                 ),
+                selectinload(Organization.phone_numbers),
             )
             .where(
                 Building.latitude.between(min_latitude, max_latitude),
