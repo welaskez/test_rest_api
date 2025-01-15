@@ -6,16 +6,17 @@
 
 1. Нужно создать папку с приватным и публичном ключом для корректной работы JWT-токенов
 ```shell
-cd app && mkdir certs
+mkdir app/certs
+openssl genrsa -out app/certs/jwt-private.pem 2048
+openssl rsa -in app/certs/jwt-private.pem -outform PEM -pubout -out app/certs/jwt-public.pem
 ```
 
-2. После нужно раскоментировать файл ![setup_db.py]([https://github.com/welaskez/](https://github.com/welaskez/test_rest_api/setup_db.py)) и запустить его
+2. Затем нужно переименовать .env.example в .env
 ```shell
-python3 setup_db.py
+mv .env.example .env
 ```
-Это нужно чтобы заполнить БД тестовыми данными
 
-3. После прошлых двух шагов можно запускать приложение
+4. После можно запускать приложение
 ```shell
 docker compose up --build
 ```
