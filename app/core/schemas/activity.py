@@ -10,8 +10,8 @@ class ActivityCreate(BaseModel):
 
 class ActivityRead(BaseModel):
     name: str
-    parent: "ActivityRead"
-    childrens: list["ActivityRead"]
+    parent: UUID | None = None
+    childrens: list["ActivityRead"] | None = None
 
 
 class ActivityUpdate(BaseModel):
