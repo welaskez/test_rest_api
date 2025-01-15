@@ -18,8 +18,18 @@ mv app/.env.example app/.env
 
 4. После можно запускать приложение
 ```shell
-docker compose up --build
+docker compose up --build -d
 ```
+
+5. Далее нужно заполнить бд тестовыми данными
+```shell
+docker exec -i postgres psql -U test_postgres -d test_postgres_db < populate_db.sql
+```
+
+
+
+
+
 
 
 
