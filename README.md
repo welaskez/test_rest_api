@@ -13,7 +13,7 @@ openssl rsa -in app/certs/jwt-private.pem -outform PEM -pubout -out app/certs/jw
 
 2. Затем нужно переименовать .env.example в .env
 ```shell
-mv .env.example .env
+mv app/.env.example app/.env
 ```
 
 4. После можно запускать приложение
