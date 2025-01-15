@@ -9,7 +9,5 @@ COPY pyproject.toml poetry.lock ./
 RUN poetry install
 
 COPY app .
-COPY scripts/entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
 
-ENTRYPOINT ["entrypoint.sh"]
+CMD ["sh", "-c", "poetry run alembic upgrade head && poetry run gunicorn --workers 5 --bind 0.0.0.0:8000 main:app --worker-class uvicorn.workers.UvicornWorker"]
