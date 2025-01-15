@@ -4,6 +4,7 @@ from core.models import db_helper
 from fastapi import Depends
 from services.activity import ActivityService
 from services.building import BuildingService
+from services.organization import OrganizationService
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -17,3 +18,9 @@ def get_activity_service(
     session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
 ) -> ActivityService:
     return ActivityService(session)
+
+
+def get_organization_service(
+    session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
+) -> OrganizationService:
+    return OrganizationService(session)
