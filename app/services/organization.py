@@ -10,6 +10,7 @@ from services.activity import serialize_activity
 
 from .base import BaseService
 from .building import serialize_building
+from .phone import serialize_phone
 
 
 class OrganizationService(BaseService[Organization]):
@@ -113,4 +114,5 @@ def serialize_organization(organization: Organization) -> OrganizationRead:
         name=organization.name,
         building=serialize_building(organization.building),
         activity=serialize_activity(organization.activity),
+        phone_numbers=[serialize_phone(phone) for phone in organization.phone_numbers],
     )

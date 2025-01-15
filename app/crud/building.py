@@ -31,6 +31,9 @@ class BuildingCRUD(BaseCRUD[Building]):
                 selectinload(Building.organizations)
                 .selectinload(Organization.activity)
                 .selectinload(Activity.childrens, recursion_depth=3),
+                selectinload(Building.organizations).selectinload(
+                    Organization.phone_numbers
+                ),
             )
             .where(Building.id == building_id)
         )

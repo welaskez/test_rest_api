@@ -30,6 +30,7 @@ class OrganizationCRUD(BaseCRUD[Organization]):
                 selectinload(Organization.activity).selectinload(
                     Activity.childrens, recursion_depth=3
                 ),
+                selectinload(Organization.phone_numbers),
             )
             .where(expression)
         )
