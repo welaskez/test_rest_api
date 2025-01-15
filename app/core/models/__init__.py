@@ -6,6 +6,7 @@ __all__ = (
     "Activity",
     "Organization",
     "Phone",
+    "User",
 )
 
 from .activity import Activity
@@ -14,3 +15,4 @@ from .building import Building
 from .db_helper import DatabaseHelper, db_helper
 from .organization import Organization
 from .phone import Phone
+from .user import User
