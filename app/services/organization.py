@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from core.models import Organization
+from core.schemas.building import BuildingRead
 from core.schemas.organization import OrganizationFiltersQueryParams, OrganizationRead
 from crud.organization import OrganizationCRUD
 from fastapi import HTTPException, status
@@ -9,7 +10,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from services.activity import serialize_activity
 
 from .base import BaseService
-from .building import serialize_building
 from .phone import serialize_phone
 
 
@@ -104,7 +104,7 @@ def serialize_organization(organization: Organization) -> OrganizationRead:
     """
     return OrganizationRead(
         name=organization.name,
-        building=serialize_building(organization.building),
+        building=BuildingRead.model_validate(organization.building),
         activity=serialize_activity(organization.activity),
         phone_numbers=[serialize_phone(phone) for phone in organization.phone_numbers],
     )
