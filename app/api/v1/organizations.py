@@ -1,13 +1,18 @@
 from typing import Annotated
 from uuid import UUID
 
+from core.auth.utils import validate_jwt_token
 from core.schemas.organization import OrganizationRead
 from fastapi import APIRouter, Depends, Path, Query, status
 from services.organization import OrganizationService
 
 from api.dependencies.services import get_organization_service
 
-router = APIRouter(prefix="/organizations", tags=["Organizations"])
+router = APIRouter(
+    prefix="/organizations",
+    tags=["Organizations"],
+    dependencies=[Depends(validate_jwt_token)],
+)
 
 
 @router.get(
