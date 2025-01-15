@@ -26,6 +26,14 @@ docker compose up --build -d
 docker exec -i postgres psql -U test_postgres -d test_postgres_db < data.sql
 ```
 
+### После выполнения этих шагов нужно перейти по адресу http://localhost:8080/docs чтобы попасть в документацию api (альтернативный вариант http://localhost:8080/redoc)
+Далее нужно пройти в ручку /api/v1/auth/ ввести юзернейм и пароль, чтобы получть ключ API
+После нужно нажать на кнопку authorize в правом верхнем углу страницы и ввести туда этот ключ
+
+Теперь можно пользоваться API
+
+
+
 
 
 
