@@ -23,7 +23,7 @@ docker compose up --build -d
 
 5. Далее нужно заполнить бд тестовыми данными
 ```shell
-docker exec -i postgres psql -U test_postgres -d test_postgres_db < populate_db.sql
+docker exec -i postgres psql -U test_postgres -d test_postgres_db < data.sql
 ```
 
 
