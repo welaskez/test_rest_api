@@ -38,43 +38,34 @@
 ## Инструкция по настройке
 Следуйте этим шагам, чтобы настроить и запустить приложение:
 
-### 1. Генерация пары ключей JWT
-Для корректной работы JWT-токенов необходимо сгенерировать приватный и публичный ключ:
-
-```bash
-mkdir -p app/certs
-openssl genrsa -out app/certs/jwt-private.pem 2048
-openssl rsa -in app/certs/jwt-private.pem -outform PEM -pubout -out app/certs/jwt-public.pem
-```
-
-### 2. Настройка переменных окружения
+### 1. Настройка переменных окружения
 Переименуйте файл `.env.example` в `.env`:
 
 ```bash
 mv app/.env.example app/.env
 ```
 
-### 3. Сборка и запуск приложения
+### 2. Сборка и запуск приложения
 Используйте Docker Compose для сборки и запуска приложения:
 
 ```bash
 docker compose up --build -d
 ```
 
-### 4. Заполнение базы данных
+### 3. Заполнение базы данных
 После запуска приложения заполните базу данных тестовыми данными:
 
 ```bash
 docker exec -i postgres psql -U test_postgres -d test_postgres_db < data.sql
 ```
 
-### 5. Доступ к документации API
+### 4. Доступ к документации API
 После запуска приложения документация API доступна по следующим адресам:
 
 - Swagger UI: [http://localhost:8080/docs](http://localhost:8080/docs)
 - Redoc: [http://localhost:8080/redoc](http://localhost:8080/redoc)
 
-### 6. Получение API ключа
+### 5. Получение API ключа
 Для работы с защищенными эндпоинтами:
 
 1. Перейдите в `/api/v1/auth` в Swagger UI.
