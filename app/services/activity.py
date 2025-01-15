@@ -1,10 +1,6 @@
-from uuid import UUID
-
 from core.models import Activity
 from core.schemas.activity import ActivityRead
-from core.schemas.organization import OrganizationRead
 from crud.activity import ActivityCRUD
-from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .base import BaseService
@@ -15,27 +11,15 @@ class ActivityService(BaseService[Activity]):
         super().__init__(session, ActivityCRUD)
         self.crud: ActivityCRUD = self.crud
 
-    async def get_organizations_by_activity(
-        self, activity_id: UUID
-    ) -> list[OrganizationRead]:
+    async def get_all_activities(self) -> list[ActivityRead]:
         """
-        Getting organizations in activity
-        :param activity_id: activity ID
-        :return: list of organizations
+        Getting all activities
+        :return: list of activity read pydantic schemas
         """
-        from .organization import serialize_organization
-
-        organizations = await self.crud.get_organizations_by_activity(activity_id)
-
-        if organizations:
-            return [
-                serialize_organization(organization) for organization in organizations
-            ]
-
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="No organizations in this building!",
-        )
+        return [
+            serialize_activity(activity)
+            for activity in await self.crud.get_loaded_activities()
+        ]
 
 
 def serialize_activity(activity: Activity) -> ActivityRead | None:
@@ -49,7 +33,7 @@ def serialize_activity(activity: Activity) -> ActivityRead | None:
 
     return ActivityRead(
         name=activity.name,
-        parent=activity.parent_id,
+        parent_id=activity.parent_id,
         childrens=[
             serialize_activity(child)
             for child in activity.childrens

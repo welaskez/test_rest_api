@@ -1,8 +1,7 @@
 from typing import Annotated
-from uuid import UUID
 
-from core.schemas.organization import OrganizationRead
-from fastapi import APIRouter, Depends, Path, status
+from core.schemas.activity import ActivityRead
+from fastapi import APIRouter, Depends, status
 from services.activity import ActivityService
 
 from api.dependencies.security import validate_api_key
@@ -16,13 +15,12 @@ router = APIRouter(
 
 
 @router.get(
-    path="/{activity_id}/organizations",
+    path="/",
     status_code=status.HTTP_200_OK,
-    response_model=list[OrganizationRead],
+    response_model=list[ActivityRead],
 )
-async def get_organizations_by_activity(
+async def get_activities(
     activity_service: Annotated[ActivityService, Depends(get_activity_service)],
-    activity_id: Annotated[UUID, Path(description="ID of activity")],
 ):
     """Return organizations by activity"""
-    return await activity_service.get_organizations_by_activity(activity_id)
+    return await activity_service.get_all_activities()

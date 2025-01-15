@@ -1,6 +1,4 @@
-from uuid import UUID
-
-from core.models import Activity, Organization
+from core.models import Activity
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -14,29 +12,10 @@ class ActivityCRUD(BaseCRUD[Activity]):
     def __init__(self, session: AsyncSession) -> None:
         super().__init__(session)
 
-    async def get_organizations_by_activity(
-        self, activity_id: UUID
-    ) -> list[Organization]:
-        """
-        Return organizations by activity
-        :param activity_id: activity ID
-        :return: list of organizations
-        """
-        activity = await self.session.scalar(
-            select(Activity)
-            .options(
-                selectinload(Activity.organizations).selectinload(
-                    Organization.building
-                ),
-                selectinload(Activity.organizations)
-                .selectinload(Organization.activity)
-                .selectinload(Activity.childrens, recursion_depth=3),
-                selectinload(Activity.organizations).selectinload(
-                    Organization.phone_numbers
-                ),
+    async def get_loaded_activities(self) -> list[Activity]:
+        activities = await self.session.scalars(
+            select(Activity).options(
+                selectinload(Activity.childrens, recursion_depth=3)
             )
-            .where(Activity.id == activity_id)
         )
-
-        if activity:
-            return activity.organizations
+        return list(activities)

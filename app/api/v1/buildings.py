@@ -1,8 +1,7 @@
 from typing import Annotated
-from uuid import UUID
 
-from core.schemas.organization import OrganizationRead
-from fastapi import APIRouter, Depends, Path, status
+from core.schemas.building import BuildingRead
+from fastapi import APIRouter, Depends, status
 from services.building import BuildingService
 
 from api.dependencies.security import validate_api_key
@@ -16,13 +15,12 @@ router = APIRouter(
 
 
 @router.get(
-    path="/{building_id}/organizations",
+    path="/",
     status_code=status.HTTP_200_OK,
-    response_model=list[OrganizationRead],
+    response_model=list[BuildingRead],
 )
-async def get_organizations_in_building(
+async def get_buildings(
     building_service: Annotated[BuildingService, Depends(get_building_service)],
-    building_id: Annotated[UUID, Path(description="ID of building")],
 ):
-    """Return organizations in building by building id"""
-    return await building_service.get_organizations_by_building_id(building_id)
+    """Return all building"""
+    return await building_service.get_all_buildings()

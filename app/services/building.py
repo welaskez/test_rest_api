@@ -1,9 +1,6 @@
-from uuid import UUID
-
 from core.models import Building
-from core.schemas.organization import OrganizationRead
+from core.schemas.building import BuildingRead
 from crud.building import BuildingCRUD
-from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .base import BaseService
@@ -14,24 +11,12 @@ class BuildingService(BaseService[Building]):
         super().__init__(session, BuildingCRUD)
         self.crud: BuildingCRUD = self.crud
 
-    async def get_organizations_by_building_id(
-        self, building_id: UUID
-    ) -> list[OrganizationRead]:
+    async def get_all_buildings(self) -> list[BuildingRead]:
         """
-        Getting organizations in building
-        :param building_id: building ID
-        :return: list of organizations
+        Getting all buildings
+        :return: list of building read pydantic schemas
         """
-        from .organization import serialize_organization
-
-        organizations = await self.crud.get_organizations_by_building(building_id)
-
-        if organizations:
-            return [
-                serialize_organization(organization) for organization in organizations
-            ]
-
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="No organizations in this building!",
-        )
+        return [
+            BuildingRead.model_validate(building)
+            for building in await self.crud.get_all()
+        ]
