@@ -41,15 +41,6 @@ class DatabaseSettings(BaseModel):
     }
 
 
-class JWTConfig(BaseModel):
-    """Configuration of access & refresh authentication tokens"""
-
-    private_key_path: Path = BASE_DIR / "certs" / "jwt-private.pem"
-    public_key_path: Path = BASE_DIR / "certs" / "jwt-public.pem"
-    algorithm: str = "RS256"
-    access_token_expire_minutes: int = 15
-
-
 class Settings(BaseSettings):
     """Application settings"""
 
@@ -68,8 +59,6 @@ class Settings(BaseSettings):
     cors: CorsConfig
 
     run: RunConfig = RunConfig()
-
-    jwt: JWTConfig = JWTConfig()
 
 
 settings = Settings()
