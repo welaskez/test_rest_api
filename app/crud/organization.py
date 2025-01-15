@@ -15,15 +15,16 @@ class OrganizationCRUD(BaseCRUD[Organization]):
     def __init__(self, session: AsyncSession) -> None:
         super().__init__(session)
 
-    async def get_loaded_organization_by_expression(
-        self, expression: ColumnExpressionArgument
-    ) -> Organization | None:
+    async def get_loaded_organizations_by_expression(
+        self, expression: ColumnExpressionArgument, many: bool = False
+    ) -> Organization | list[Organization] | None:
         """
         Return organization with loaded relations
         :param expression: where expression
+        :param many: if true return list of organizations else one org
         :return: organization or none
         """
-        organization = await self.session.scalar(
+        stmt = (
             select(Organization)
             .options(
                 selectinload(Organization.building),
@@ -34,9 +35,10 @@ class OrganizationCRUD(BaseCRUD[Organization]):
             )
             .where(expression)
         )
-
-        if organization:
-            return organization
+        if many:
+            return list(await self.session.scalars(stmt))
+        else:
+            return await self.session.scalar(stmt)
 
     async def get_organizations_in_circular_area(
         self,

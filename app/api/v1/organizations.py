@@ -16,7 +16,7 @@ router = APIRouter(
 
 
 @router.get(
-    path="/search/name",
+    path="/search",
     status_code=status.HTTP_200_OK,
     response_model=OrganizationRead,
 )
@@ -24,21 +24,18 @@ async def get_organization_by_name(
     organization_service: Annotated[
         OrganizationService, Depends(get_organization_service)
     ],
-    organization_name: Annotated[
-        str,
-        Query(description="Name of organization"),
-    ],
+    name: Annotated[str, Query(description="Name of organization")],
 ):
     """Return organization by name"""
-    return await organization_service.get_organization_by_name(organization_name)
+    return await organization_service.get_organization_by_name(name)
 
 
 @router.get(
-    path="/search/location",
+    path="/search/many",
     status_code=status.HTTP_200_OK,
     response_model=list[OrganizationRead],
 )
-async def get_organizations_by_location(
+async def get_organizations(
     organization_service: Annotated[
         OrganizationService, Depends(get_organization_service)
     ],
@@ -46,7 +43,7 @@ async def get_organizations_by_location(
 ):
     """
     Returns the list of organizations located in the specified
-    radius/rectangular space:
+    radius/rectangular space or by building & activity:
     - center_latitude, center_longitude, radius: Filter organizations within
     a circular area.
     - min_latitude, max_latitude, min_longitude, max_longitude: Filter
@@ -64,10 +61,7 @@ async def get_organization_by_id(
     organization_service: Annotated[
         OrganizationService, Depends(get_organization_service)
     ],
-    organization_id: Annotated[
-        UUID,
-        Path(description="ID of organization"),
-    ],
+    organization_id: Annotated[UUID, Path(description="ID of organization")],
 ):
     """Return organization by ID"""
     return await organization_service.get_organization_by_id(organization_id)

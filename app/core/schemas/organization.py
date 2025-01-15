@@ -27,6 +27,8 @@ class OrganizationRead(BaseModel):
 
 
 class OrganizationFiltersQueryParams(BaseModel):
+    building_id: UUID | None = Field(description="ID of building", default=None)
+    activity_id: UUID | None = Field(description="ID of activity", default=None)
     center_latitude: float | None = Field(
         description="Latitude of the center for radius search", default=None
     )
