@@ -2,7 +2,7 @@ from typing import Annotated
 from uuid import UUID
 
 from core.auth.utils import validate_jwt_token
-from core.schemas.organization import OrganizationRead
+from core.schemas.organization import OrganizationFiltersQueryParams, OrganizationRead
 from fastapi import APIRouter, Depends, Path, Query, status
 from services.organization import OrganizationService
 
@@ -42,34 +42,7 @@ async def get_organizations_by_location(
     organization_service: Annotated[
         OrganizationService, Depends(get_organization_service)
     ],
-    center_latitude: Annotated[
-        float | None,
-        Query(description="Latitude of the center for radius search"),
-    ] = None,
-    center_longitude: Annotated[
-        float | None,
-        Query(description="Longitude of the center for radius search"),
-    ] = None,
-    radius: Annotated[
-        float | None,
-        Query(description="Radius (in kilometers) for search around the center"),
-    ] = None,
-    min_latitude: Annotated[
-        float | None,
-        Query(description="Minimum latitude for rectangular search"),
-    ] = None,
-    max_latitude: Annotated[
-        float | None,
-        Query(description="Maximum latitude for rectangular search"),
-    ] = None,
-    min_longitude: Annotated[
-        float | None,
-        Query(description="Minimum longitude for rectangular search"),
-    ] = None,
-    max_longitude: Annotated[
-        float | None,
-        Query(description="Maximum longitude for rectangular search"),
-    ] = None,
+    filters: Annotated[OrganizationFiltersQueryParams, Query()],
 ):
     """
     Returns the list of organizations located in the specified
@@ -79,15 +52,7 @@ async def get_organizations_by_location(
     - min_latitude, max_latitude, min_longitude, max_longitude: Filter
     organizations within a rectangular area.
     """
-    return await organization_service.get_filtered_organizations(
-        center_latitude=center_latitude,
-        center_longitude=center_longitude,
-        radius=radius,
-        min_latitude=min_latitude,
-        max_latitude=max_latitude,
-        min_longitude=min_longitude,
-        max_longitude=max_longitude,
-    )
+    return await organization_service.get_filtered_organizations(filters)
 
 
 @router.get(

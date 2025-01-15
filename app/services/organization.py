@@ -1,7 +1,7 @@
 from uuid import UUID
 
 from core.models import Organization
-from core.schemas.organization import OrganizationRead
+from core.schemas.organization import OrganizationFiltersQueryParams, OrganizationRead
 from crud.organization import OrganizationCRUD
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -56,41 +56,33 @@ class OrganizationService(BaseService[Organization]):
         )
 
     async def get_filtered_organizations(
-        self,
-        center_latitude: float | None = None,
-        center_longitude: float | None = None,
-        radius: float | None = None,
-        min_latitude: float | None = None,
-        max_latitude: float | None = None,
-        min_longitude: float | None = None,
-        max_longitude: float | None = None,
+        self, filters: OrganizationFiltersQueryParams
     ) -> list[OrganizationRead]:
         """
         Getting organizations by rect area or circular area
-        :param center_latitude: central latitude (for circular area)
-        :param center_longitude: central longitude (for circular area)
-        :param radius: radius (for circular area)
-        :param min_latitude: minimal latitude (for rect area)
-        :param max_latitude: maximal latitude (for rect area)
-        :param min_longitude: minimal longitude (for rect area)
-        :param max_longitude: maximal longitude (for rect area)
+        :param filters: filters
         :return: list of organizations
         """
         organizations = []
 
-        if center_latitude and center_longitude and radius:
+        if filters.center_latitude and filters.center_longitude and filters.radius:
             organizations = await self.crud.get_organizations_in_circular_area(
-                center_latitude,
-                center_longitude,
-                radius,
+                filters.center_latitude,
+                filters.center_longitude,
+                filters.radius,
             )
 
-        if min_latitude and max_latitude and min_longitude and max_longitude:
+        if (
+            filters.min_latitude
+            and filters.max_latitude
+            and filters.min_longitude
+            and filters.max_longitude
+        ):
             organizations = await self.crud.get_organizations_in_rect_area(
-                min_latitude,
-                max_latitude,
-                min_longitude,
-                max_longitude,
+                filters.min_latitude,
+                filters.max_latitude,
+                filters.min_longitude,
+                filters.max_longitude,
             )
 
         if organizations:
