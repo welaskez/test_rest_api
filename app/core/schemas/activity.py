@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class ActivityCreate(BaseModel):
     name: str
-    parent_id: UUID | str
+    parent_id: UUID | str | None
 
 
 class ActivityRead(BaseModel):
