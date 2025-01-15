@@ -27,6 +27,3 @@ services:
       - ./postgres-data:/var/lib/postgresql/data
     networks:
       app:
-
-volumes:
-    postgres:
