@@ -2,11 +2,14 @@ from api import router
 from core.config import settings
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import ORJSONResponse
 
 
-def create_app():
-    app = FastAPI(default_response_class=ORJSONResponse)
+def create_app() -> FastAPI:
+    """
+    Initialize FastAPI application instance
+    :return: fastapi app
+    """
+    app = FastAPI()
 
     app.include_router(router)
 
