@@ -38,4 +38,5 @@ class BuildingCRUD(BaseCRUD[Building]):
             .where(Building.id == building_id)
         )
 
-        return building.organizations
+        if building:
+            return building.organizations

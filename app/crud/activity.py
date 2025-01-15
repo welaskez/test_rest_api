@@ -38,4 +38,5 @@ class ActivityCRUD(BaseCRUD[Activity]):
             .where(Activity.id == activity_id)
         )
 
-        return activity.organizations
+        if activity:
+            return activity.organizations

@@ -35,7 +35,8 @@ class OrganizationCRUD(BaseCRUD[Organization]):
             .where(expression)
         )
 
-        return organization
+        if organization:
+            return organization
 
     async def get_organizations_in_circular_area(
         self,
