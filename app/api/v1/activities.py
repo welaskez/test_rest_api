@@ -22,7 +22,7 @@ router = APIRouter(
 )
 async def get_organizations_by_activity(
     activity_service: Annotated[ActivityService, Depends(get_activity_service)],
-    activity_id: Annotated[UUID, Path(description="ID of building")],
+    activity_id: Annotated[UUID, Path(description="ID of activity")],
 ):
     """Return organizations by activity"""
     return await activity_service.get_organizations_by_activity(activity_id)
