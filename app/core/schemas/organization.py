@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 from .activity import ActivityRead
 from .building import BuildingRead
+from .phone_number import PhoneRead
 
 
 class OrganizationCreate(BaseModel):
@@ -22,3 +23,4 @@ class OrganizationRead(BaseModel):
     name: str
     building: BuildingRead
     activity: ActivityRead
+    phone_numbers: list[PhoneRead]
