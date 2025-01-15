@@ -48,6 +48,8 @@ class Settings(BaseSettings):
         extra="allow",
     )
 
+    earth_radius_in_km: float = 6371.0
+
     db: DatabaseSettings
 
     cors: CorsConfig
