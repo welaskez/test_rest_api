@@ -44,14 +44,4 @@ def serialize_building(building: Building) -> BuildingRead:
     :param building: SQLA model of building
     :return: building read pydantic schema
     """
-    return BuildingRead(
-        county=building.county,
-        region=building.region,
-        city=building.city,
-        district=building.district,
-        micro_district_or_street=building.micro_district_or_street,
-        number=building.number,
-        postal_code=building.postal_code,
-        latitude=building.latitude,
-        longitude=building.longitude,
-    )
+    return BuildingRead.model_validate(building)

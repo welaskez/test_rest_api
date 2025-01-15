@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class BuildingCreate(BaseModel):
@@ -14,7 +14,7 @@ class BuildingCreate(BaseModel):
 
 
 class BuildingRead(BuildingCreate):
-    pass
+    model_config = ConfigDict(from_attributes=True)
 
 
 class BuildingUpdate(BaseModel):
