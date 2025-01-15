@@ -144,7 +144,7 @@ async def setup_db():
 
 async def clear_db():
     async with db_helper.session_pool() as session:
-        for model in [Organization, Activity, Building, User, Phone]:
+        for model in [Phone, Organization, Activity, Building, User]:
             await session.execute(
                 text(f"TRUNCATE TABLE {model.__tablename__} RESTART IDENTITY CASCADE;")
             )
