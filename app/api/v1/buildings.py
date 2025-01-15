@@ -1,17 +1,17 @@
 from typing import Annotated
 from uuid import UUID
 
-from core.auth.utils import validate_jwt_token
 from core.schemas.organization import OrganizationRead
 from fastapi import APIRouter, Depends, Path, status
 from services.building import BuildingService
 
+from api.dependencies.security import validate_api_key
 from api.dependencies.services import get_building_service
 
 router = APIRouter(
     prefix="/buildings",
     tags=["Buildings"],
-    dependencies=[Depends(validate_jwt_token)],
+    dependencies=[Depends(validate_api_key)],
 )
 
 

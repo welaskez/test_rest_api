@@ -1,8 +1,7 @@
-from core.auth.jwt import encode_jwt
-from core.auth.utils import hash_password, validate_password
+from core.auth.utils import generate_static_token, hash_password, validate_password
 from core.models import User
-from core.schemas.auth import TokenRead
-from core.schemas.user import UserCreate, UserUpdate
+from core.schemas.auth import ApiKeyResponse
+from core.schemas.user import UserCreate
 from crud.user import UserCRUD
 from fastapi import HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
@@ -16,7 +15,15 @@ class UserService(BaseService[User]):
         super().__init__(session, UserCRUD)
         self.crud: UserCRUD = self.crud
 
-    async def auth(self, form_data: OAuth2PasswordRequestForm) -> TokenRead:
+    async def get_by_api_key(self, api_key: str) -> User | None:
+        """
+        Return user by api key
+        :param api_key: api key
+        :return: user or none
+        """
+        return await self.crud.get_one_by_expression(User.api_key == api_key)
+
+    async def register(self, form_data: OAuth2PasswordRequestForm) -> ApiKeyResponse:
         """
         authenticate new user, add him to db & return access token
         :param form_data: form data
@@ -33,19 +40,19 @@ class UserService(BaseService[User]):
 
         password = hash_password(form_data.password)
 
-        access_token = encode_jwt(payload={"sub": form_data.username})
+        api_key = generate_static_token()
 
         await self.crud.create(
             UserCreate(
                 username=form_data.username,
                 password=password.decode(),
-                api_key=access_token,
+                api_key=api_key,
             )
         )
 
-        return TokenRead(access=access_token)
+        return ApiKeyResponse(api_key=api_key)
 
-    async def refresh(self, form_data: OAuth2PasswordRequestForm) -> TokenRead:
+    async def login(self, form_data: OAuth2PasswordRequestForm) -> ApiKeyResponse:
         """
         refresh token for existing user
         :param form_data: form_data
@@ -67,11 +74,7 @@ class UserService(BaseService[User]):
                     detail="Username or password invalid!",
                 )
 
-            access_token = encode_jwt(payload={"sub": form_data.username})
-
-            await self.crud.update(user, UserUpdate(api_key=access_token))
-
-            return TokenRead(access=access_token)
+            return ApiKeyResponse(api_key=user.api_key)
 
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
