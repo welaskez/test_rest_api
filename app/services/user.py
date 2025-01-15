@@ -62,17 +62,22 @@ class UserService(BaseService[User]):
             User.username == form_data.username
         )
 
+        invalid_passwd_exc = HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Password invalid!",
+        )
+
         if user:
             try:
-                validate_password(
+                is_valid = validate_password(
                     password=form_data.password,
                     hashed_password=user.password.encode(),
                 )
             except ValueError:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Username or password invalid!",
-                )
+                raise invalid_passwd_exc
+
+            if not is_valid:
+                raise invalid_passwd_exc
 
             return ApiKeyResponse(api_key=user.api_key)
 
