@@ -10,12 +10,12 @@ from setup_app import clear_db, setup_db
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # startup
+    await clear_db()
     await setup_db()
 
     yield
 
     # shutdown
-    await clear_db()
 
 
 def create_app() -> FastAPI:
