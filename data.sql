@@ -23,8 +23,8 @@ VALUES
     ('f533055c-3a38-4215-aae3-8f301bd69ab9', 'Рога и Копыта', 'e8b3773e-e499-4f0e-b205-e45a4016d0ba', '9bda502d-ee20-4744-ad9a-55644cf9d867', NOW(), NOW()), -- organization_1_id
     ('ab21f9e3-56af-4a4b-b7e4-222bde7129fc', 'Автосервис', '21b8b4e6-5842-476a-bff9-0cf632dc141a', '13ecd60b-1ff7-4662-bbbf-dc948d523a6f', NOW(), NOW()); -- organization_2_id
 
--- Вставка данных в таблицу phone_numbers
-INSERT INTO phone_numbers (id, number, organization_id, created_at, updated_at)
+-- Вставка данных в таблицу phones
+INSERT INTO phones (id, number, organization_id, created_at, updated_at)
 VALUES
     ('cd41f6b9-4c13-4ffb-a873-7bd4e2c68888', '777 777 777', 'f533055c-3a38-4215-aae3-8f301bd69ab9', NOW(), NOW()), -- phone_1_id
     ('d7e63af9-69bf-4f58-bb2e-88213b715c9a', '0 000 000 0', 'ab21f9e3-56af-4a4b-b7e4-222bde7129fc', NOW(), NOW());
