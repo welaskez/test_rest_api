@@ -25,9 +25,9 @@ class UserService(BaseService[User]):
 
     async def register(self, form_data: OAuth2PasswordRequestForm) -> ApiKeyResponse:
         """
-        authenticate new user, add him to db & return access token
-        :param form_data: form data
-        :return: token
+        Authenticate new user, add him to db & return access token
+        :param form_data: form data (login, password)
+        :return: api key
         """
         user = await self.crud.get_one_by_expression(
             User.username == form_data.username
@@ -54,9 +54,9 @@ class UserService(BaseService[User]):
 
     async def login(self, form_data: OAuth2PasswordRequestForm) -> ApiKeyResponse:
         """
-        refresh token for existing user
-        :param form_data: form_data
-        :return: token
+        Login user & return his api key
+        :param form_data: form_data (login, password)
+        :return: api key
         """
         user = await self.crud.get_one_by_expression(
             User.username == form_data.username
