@@ -22,5 +22,5 @@ router = APIRouter(
 async def get_activities(
     activity_service: Annotated[ActivityService, Depends(get_activity_service)],
 ):
-    """Return organizations by activity"""
+    """Return all activities"""
     return await activity_service.get_all_activities()
